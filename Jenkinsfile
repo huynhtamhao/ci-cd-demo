@@ -9,8 +9,8 @@ pipeline {
     environment {
         BUILD_TRIGGER_BY = "${currentBuild.getBuildCauses()[0].shortDescription}"
         VERSION = "${env.BUILD_ID}-${env.GIT_COMMIT.take(6)}"
-        IMAGE = "demo-ci-cd:${VERSION}"
-        IMAGE_LATEST = "demo-ci-cd:latest"
+        IMAGE_LATEST = "huynhtamhao/cicd-demo:latest"
+        DOCKER_HUB_LOGIN = credentials("docker-hub-account")
     }
 
     stages {
@@ -28,10 +28,17 @@ pipeline {
 
         stage("Build Docker Image") {
             steps {
-                sh "gradle docker -PimageName=${IMAGE}"
+                sh "gradle docker -PimageName=${IMAGE_LATEST}"
             }
         }
 
-
+        stage("Push Docker Image to Registry") {
+            steps {
+                sh "docker login \
+                      --username=${DOCKER_HUB_LOGIN_USR} \
+                      --password=${DOCKER_HUB_LOGIN_PSW} \
+                      && docker push ${IMAGE_LATEST}"
+            }
+        }
     }
 }
