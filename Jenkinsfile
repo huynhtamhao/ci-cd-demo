@@ -8,15 +8,15 @@ pipeline {
 
     stages {
         stage('SonarQube Analysis') {
-            withSonarQubeEnv() {
-                sh "./gradlew sonar"
+            steps {
+                sh "gradle sonarqube"
             }
         }
 
-//        stage("Build") {
-//            steps {
-//                sh "gradle clean build"
-//            }
-//        }
+        stage("Build") {
+            steps {
+                sh "gradle clean build"
+            }
+        }
     }
 }
