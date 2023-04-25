@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class DemoApplication {
 
     public static void main(String[] args) {
-        System.out.println("Current Time: ============== " + LocalDateTime.now() + "============== ");
+        System.out.println("Current Time: ============== " + LocalDateTime.now() + "==============, VERSION 1");
         SpringApplication.run(DemoApplication.class, args);
     }
 
