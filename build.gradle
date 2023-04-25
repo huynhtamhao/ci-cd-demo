@@ -42,3 +42,16 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
+
+docker {
+    if (project.hasProperty("imageName")) {
+        name "${imageName}"
+        dockerfile file("Dockerfile")
+        files "build/libs/${bootJar.archiveFileName.get()}"
+        buildArgs([
+                JAR_FILE         : bootJar.archiveFileName.get(),
+                PROJECT_PORT     : "8080",
+                WORKING_DIRECTORY: "/usr/src/app",
+        ])
+    }
+}
