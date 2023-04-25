@@ -32,6 +32,12 @@ pipeline {
             }
         }
 
+        stage("Cleaning up") {
+            steps{
+                sh "docker rmi \$(docker images --format '{{.Repository}}:{{.Tag}}' | grep '${IMAGE_LATEST}')"
+            }
+        }
+
         stage("Push Docker Image to Registry") {
             steps {
                 sh "docker login \
