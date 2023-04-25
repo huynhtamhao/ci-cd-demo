@@ -13,6 +13,19 @@ pipeline {
         DOCKER_HUB_LOGIN = credentials("docker-hub-account")
     }
 
+
+    post {
+        always {
+            discordSend description: "${BUILD_TRIGGER_BY} build on branch: ${env.GIT_BRANCH}",
+                    footer: "Kairos Jenkins",
+                    link: env.BUILD_URL,
+                    result: currentBuild.currentResult,
+                    unstable: false,
+                    title: JOB_NAME,
+                    webhookURL: "${DISCORD_WEBHOOK_URL}"
+        }
+    }
+
     stages {
         stage('SonarQube Analysis') {
             steps {
@@ -32,12 +45,6 @@ pipeline {
             }
         }
 
-        stage("Cleaning up") {
-            steps{
-                sh "docker rmi \$(docker images --format '{{.Repository}}:{{.Tag}}' | grep '${IMAGE_LATEST}')"
-            }
-        }
-
         stage("Push Docker Image to Registry") {
             steps {
                 sh "docker login \
@@ -46,5 +53,12 @@ pipeline {
                       && docker push ${IMAGE_LATEST}"
             }
         }
+
+        stage("Cleaning up") {
+            steps{
+                sh "docker rmi \$(docker images --format '{{.Repository}}:{{.Tag}}' | grep '${IMAGE_LATEST}')"
+            }
+        }
+
     }
 }
