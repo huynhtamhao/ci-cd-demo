@@ -84,7 +84,7 @@ pipeline {
                               -p 8080:8080 -v ~/demo-logs:/usr/src/app/logs ${IMAGE_LATEST}"
                     }
                 }
-                echo "Docker Image: ${NEXUS_DOCKER_HUB}/${IMAGE}"
+                echo "Docker Image: ${IMAGE_LATEST}"
             }
         }
     }
