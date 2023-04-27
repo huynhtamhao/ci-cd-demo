@@ -14,6 +14,15 @@ public class DemoController {
 
     @GetMapping("")
     public String demo() {
-        return "Demo Text" + demoText;
+        String text = "";
+        if (text.equals("A"))
+            System.out.println("A");
+        if (text.equals("B"))
+            System.out.println("B");
+        if (text.equals("C"))
+            System.out.println("C");
+        if (text.equals(""))
+            System.out.println("");
+        return "Demo Text: " + demoText;
     }
 }
